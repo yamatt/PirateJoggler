@@ -1,0 +1,3 @@
+[submodule "python-simplekeydb"]
+	path = python-simplekeydb
+	url = git@github.com:yamatt/python-simplekeydb.git
