@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Pirate Joggler</title>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="/static/css/themes/default.css" media="screen" />
+		<link rel="shortcut icon" href="/static/favicon.png">
+		<script src="/static/js/jquery-1.5.min.js" type="text/javascript"></script>
+		<script src="/static/js/jquery.filedrop.js" type="text/javascript"></script>
+		<script src="/static/js/jquery.blockUI.js" type="text/javascript"></script>
+		<script type="text/javascript">
+$(document).ready(function() {
+	$('body').filedrop({
+		url: '/upload',
+		paramname: 'file',
+		error: function(err, file) {
+			switch(err) {
+				case 'BrowserNotSupported':
+					alert('browser does not support html5 drag and drop')
+	             			break;
+				case 'TooManyFiles':
+					// user uploaded more than 'maxfiles'
+		 			break;
+				case 'FileTooLarge':
+					// program encountered a file whose size is greater than 'maxfilesize'
+					// FileTooLarge also has access to the file which was too large
+					// use file.name to reference the filename of the culprit file
+					break;
+				default:
+					break;
+			}
+		},
+		maxfiles: 50,
+		maxfilesize: 2048,	//MB
+		dragOver: function() {
+			$('#fileover').show();
+		},
+		dragLeave: function() {
+			$('#fileover').hide();
+		},
+		uploadStarted: function(i, file, len){
+			//$.blockUI({ message: $('#uploads') }); 
+		},
+		uploadFinished: function(i, file, response, time) {
+			// update download panel
+		},
+		progressUpdated: function(i, file, progress) {
+			// update the download panel
+		},
+		speedUpdated: function(i, file, speed) {
+			// update download panel
+		}
+	});
+});
+		</script>
+	</head>
+	<body>
+		<div id="fileover" class="uielement">
+			<img src="/static/ui/file-hover.png" alt="drop file" title="Drop file" />
+		</div>
+		<div id="uploads" class="uielement">
+			<a href="" class="close"><img src="/static/ui/close-small.png" alt="close" title="Close" /></a>
+			<ul>
+				<li>
+					<h3>file.txt</h3>
+					<div class="progessbar">
+						<div class="progress">&nbsp;</div>
+					</div>
+					<span class="percent">0%</span>
+					<span class="speed">0kbs</span>
+					<button>Cancel</button>
+				</li>
+			</ul>
+		</div>
+		<div id="messages" class="uielement">
+		</div>
+		</div>
+		<div id="container">
+			<div id="head">
+				<img src="/static/logo.png" alt="Pirate Joggler Logo" alt="Pirate Joggler Logo" title="Pirate Joggler" />
+				<h1>Pirate Joggler</h1>
+				<h2>Path: {{ path }}</h2>
+			</div>
+			<table id="files">
+				<caption><h2>Files:</h2></caption>
+				<thead>
+					<tr>
+						<th>type</th>
+						<th>filename</th>
+						<th>controls</th>
+					</tr>
+				</thead>
+				<tbody>
+{% for file in files %}
+					<tr>
+						<td><img src="/static/ui/file.png" alt="file" title="File" /></td>
+						<td><a href="">{{ file['file_name'] }}</a></td>
+						<td>
+{% block buttons.html %}{% endblock %}
+						</td>
+					</tr>
+{% endfor %}
+				</tbody>
+			</table>
+			<div id="license">
+{% block license.html %}{% endblock %}
+			</div>
+		</div>
+	</body>
+</html>

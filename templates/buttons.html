@@ -1,0 +1,8 @@
+{% extends "layout.html" %}
+							<a href=""><img src="/static/ui/info.png" alt="info" title="Information" /></a>
+							<a href=""><img src="/static/ui/dl.png" alt="download" title="Download" /></a>
+							<a href=""><img src="/static/ui/play.png" alt="play" title="Play" /></a>
+{% if session.admin %}
+							<a href=""><img src="/static/ui/safe.png" alt="safe" title="Toggle Safe" /></a>
+							<a href=""><img src="/static/ui/delete.png" alt="delete" title="Delete" /></a>
+{% endif %}

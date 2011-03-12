@@ -1,0 +1,14 @@
+#menu {
+  background:	#aaa url('/static/ui/menu-background.png') repeat-x left bottom;
+  margin-bottom:	1em;
+  -moz-border-radius:	1em 1em 0 0;
+  border-radius:	1em 1em 0 0;
+}
+
+#files tbody tr:nth-child(even) {
+  background-color:	#ddd;
+}
+
+#files tbody tr:hover {
+  background-color:	#aaa;
+}
