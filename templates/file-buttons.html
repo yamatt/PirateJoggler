@@ -1,0 +1,12 @@
+							<a href="#" onclick="get_info('{{ file['path'] }}');"><img src="/static/ui/info.png" alt="info" title="Information" /></a>
+							<a href="{{ file['path'] }}"><img src="/static/ui/dl.png" alt="download" title="Download" /></a>
+    {% if file['playable'] %}
+							<a href="#" onclick="play('{{ file['path'] }}');"><img src="/static/ui/play.png" alt="play" title="Play" /></a>
+    {% endif %}
+							<img src="/static/ui/safe-caution.png" {% if file['safe']%}style="display: none"{% endif %} class="safe" alt="Unsafe" title="File marked as unsafe" />
+    {% if session.admin %}
+							<div id="adminbuttons">
+								<a href="#" onclick="delete('{{ file['path'] }}');"><img src="/static/ui/delete.png" alt="delete" title="Delete" /></a>
+								<a href="#" onclick="toggle_safe('{{ file['path'] }}', $(this).parent().find('.safe'));"><img src="/static/ui/safe.png" alt="safe" title="Toggle Safe" /></a>
+							</div>
+    {% endif %}

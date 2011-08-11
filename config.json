@@ -1,11 +1,12 @@
 {
 	"port": 80,
-	"path": "files",
+	"files": "files",
 	"debug": true,
-	"database": "pirateJoggler.db",
+	"database": "pj.db",
 	"xuser": "joggler",
 	"allowed_extensions": ["avi", "mpg", "mp4", "ogv", "mp3", "ogg", "flac", "jpg", "png", "zip", "gz", "txt", "pdf", "apk", "iso"],
 	"clamav": "",
 	"adminpassword": "",
-	"sessionhash": ""
+	"sessionhash": "",
+	"media_player":	"sudo -u joggler vlc %s"
 }

@@ -10,5 +10,5 @@
 }
 
 #files tbody tr:hover {
-  background-color:	#aaa;
+  background:	#ccc url('../../ui/down-fade.png') left bottom repeat-x;
 }

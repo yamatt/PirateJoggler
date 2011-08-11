@@ -1,17 +1,24 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Pirate Joggler</title>
+		<title>PirateJoggler</title>
 		<link rel="stylesheet" type="text/css" href="/static/css/style.css" media="screen" />
 		<link rel="stylesheet" type="text/css" href="/static/css/themes/default.css" media="screen" />
 		<link rel="shortcut icon" href="/static/favicon.png">
 		<script src="/static/js/jquery-1.5.min.js" type="text/javascript"></script>
-		<script src="/static/js/jquery.filedrop.js" type="text/javascript"></script>
-		<script src="/static/js/jquery.blockUI.js" type="text/javascript"></script>
+		<script src="/static/js/filedrop/jquery.filedrop.js" type="text/javascript"></script>
 		<script type="text/javascript">
 $(document).ready(function() {
+	messagebox = $('#message');
+	if (messagebox.text().trim() != "") {
+		messagebox.show();
+	}
+
+	$('#message').click(function () {
+		$(this).fadeOut();
+	});
+
 	$('body').filedrop({
-		url: '/upload',
 		paramname: 'file',
 		error: function(err, file) {
 			switch(err) {
@@ -39,10 +46,11 @@ $(document).ready(function() {
 			$('#fileover').hide();
 		},
 		uploadStarted: function(i, file, len){
-			//$.blockUI({ message: $('#uploads') }); 
+			$('body').css('cursor', 'progress');
 		},
 		uploadFinished: function(i, file, response, time) {
-			// update download panel
+			$('#fileover').hide();
+			$('body').css('cursor', 'auto');
 		},
 		progressUpdated: function(i, file, progress) {
 			// update the download panel
@@ -52,11 +60,81 @@ $(document).ready(function() {
 		}
 	});
 });
+
+function display_message (message) {
+	messagebox = $('#message')
+	messagebox.find('p').text(message);
+	messagebox.show();
+}
+
+function get_info (uname) {
+	$.getJSON(uname,
+		'info',
+		function (data) {
+			var table = $('#info tbody');
+			table.empty();
+			function make_row (key, val) {
+				var tr = $('<tr></tr>');
+				tr.append($('<td>' + key + '</td>'));
+				tr.append($('<td>' + val + '</td>'));
+				return tr;
+			};
+			table.append(make_row('Unique name', data['unique_name']));
+
+			var added_date = new Date(data['created'] * 1000);
+			table.append(make_row('Added', added_date.toLocaleDateString() + " at " + added_date.toLocaleTimeString()));
+
+			var filesize = Math.floor(data['size'] / 1024);
+			table.append(make_row('File size', filesize + 'KB'));
+
+			table.append(make_row('Safe', data['safe']));
+			table.append(make_row('sha1', data['hashes']['sha1']));
+			table.append(make_row('sha512', data['hashes']['sha512']));
+			table.append(make_row('md5', data['hashes']['md5']));
+
+			$('#info').show();
+		});
+}
+
+function toggle_safe (file_path, safe_img) {
+	$.getJSON(file_path,
+		'safe',
+		function (data) {
+			if (data['success']) {
+				safe_img.toggle();
+			}
+			else {
+				display_message(data['message']);
+			}
+		});
+}
+
+function update_filelist () {
+	// get list of files and folders
+	// check for admin
+	// clear down table
+	// create objects containing said files and folders
+	// add entries to table
+}
 		</script>
 	</head>
 	<body>
 		<div id="fileover" class="uielement">
 			<img src="/static/ui/file-hover.png" alt="drop file" title="Drop file" />
+		</div>
+		<div id="info" class="uielement">
+			<a href="#" onclick="$(this).parent().hide()" class="close" ><img src="static/ui/close-small.png" /></a>
+			<h2>Info</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>Key</th>
+						<th>Value</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
 		</div>
 		<div id="uploads" class="uielement">
 			<a href="" class="close"><img src="/static/ui/close-small.png" alt="close" title="Close" /></a>
@@ -72,17 +150,19 @@ $(document).ready(function() {
 				</li>
 			</ul>
 		</div>
-		<div id="messages" class="uielement">
+		<div id="message" class="uielement">
+			<p>{{ message }}</p>
 		</div>
 		</div>
 		<div id="container">
 			<div id="head">
 				<img src="/static/logo.png" alt="Pirate Joggler Logo" alt="Pirate Joggler Logo" title="Pirate Joggler" />
-				<h1>Pirate Joggler</h1>
-				<h2>Path: {{ path }}</h2>
+				<h1>Pirate<span class="red">Joggler</span></h1>
+				<h2>Path:</h2>
+{% include 'path.html' %}
 			</div>
 			<table id="files">
-				<caption><h2>Files:</h2></caption>
+				<caption>Items within this directory:</caption>
 				<thead>
 					<tr>
 						<th>type</th>
@@ -91,19 +171,28 @@ $(document).ready(function() {
 					</tr>
 				</thead>
 				<tbody>
+{% for folder in folders %}
+					<tr>
+						<td><img src="/static/ui/folder.png" alt="file" title="Folder" /></td>
+						<td><a href="{{ folder }}/">{{ folder }}</a></td>
+						<td>
+{% include 'folder-buttons.html' %}
+						</td>
+					</tr>
+{% endfor %}
 {% for file in files %}
 					<tr>
 						<td><img src="/static/ui/file.png" alt="file" title="File" /></td>
-						<td><a href="">{{ file['file_name'] }}</a></td>
+						<td><a href="{{ file['file_name'] }}">{{ file['file_name'] }}</a></td>
 						<td>
-{% block buttons.html %}{% endblock %}
+{% include 'file-buttons.html' %}
 						</td>
 					</tr>
 {% endfor %}
 				</tbody>
 			</table>
 			<div id="license">
-{% block license.html %}{% endblock %}
+{% include 'license.html' %}
 			</div>
 		</div>
 	</body>

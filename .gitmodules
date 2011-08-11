@@ -1,3 +1,9 @@
 [submodule "python-simplekeydb"]
 	path = python-simplekeydb
 	url = git@github.com:yamatt/python-simplekeydb.git
+[submodule "simplekeydb"]
+	path = simplekeydb
+	url = git@github.com:yamatt/python-simplekeydb.git
+[submodule "static/js/filedrop"]
+	path = static/js/filedrop
+	url = git@github.com:yamatt/jquery-filedrop.git

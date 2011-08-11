@@ -1,5 +1,6 @@
 body {
-  font-family:		sans-serif;
+  font-family:	sans-serif;
+  color:	#333;
 }
 
 a {
@@ -8,11 +9,33 @@ a {
 }
 
 a:hover {
-	text-decoration:	underline;
+  text-decoration:	underline;
+}
+
+.red {
+  color:	#933;
+}
+
+#path {
+  margin:	0;
+  padding:	0;
+}
+
+#path li {
+  display:		inline;
+  margin:		0 0.2em;
+  padding:		0 1em;
+  border:		1px #eee solid;
+  border-radius:	1em;
+  background:		#ccc url('../ui/down-fade.png') right bottom repeat-x;
 }
 
 a img {
   border:	0;
+}
+
+#head {
+  height:	200px;
 }
 
 #head img {
@@ -38,7 +61,7 @@ table thead {
 }
 
 #files tbody td:nth-child(3) {
-  width:	60px;
+  width:	90px;
   text-align:	right;
 }
 
@@ -48,11 +71,46 @@ table thead {
   text-align:	center;
 }
 
+#licensedetail {
+  display:	none;
+}
+
 .uielement {
   display:		none;
-  background-color:	#412e49;
+  background:		#412e49 url('../ui/uie-top.png') top left repeat-x;
   position:		fixed;
   color:		#fff;
+  border-radius:        1em;
+  padding:		1em;
+  box-shadow:		1em 1em 2em #888;
+}
+
+#message {
+  cursor:	pointer;
+}
+
+.uielement .close {
+  float:	right;
+}
+
+#info {
+  position:	fixed;
+  width:	30em;
+  height:	24em;
+  top:		50%;
+  left:		50%;
+  margin-top:	-12em;
+  margin-left:	-15em;
+}
+
+#info tbody td {
+  word-break:		break-all;
+}
+
+#info tbody td:first-child {
+  font-weight:		bold;
+  width:		8em;
+  vertical-align:	top; 
 }
 
 #fileover {

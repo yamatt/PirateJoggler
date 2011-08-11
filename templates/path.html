@@ -1,0 +1,6 @@
+				<ul id="path">
+					<li><a href="/">/</a></li>
+{% for part in path %}
+					<li><a href="{{ part['path'] }}">{{ part['label'] }}/</a></li>
+{% endfor %}
+				</ul>
